@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmsiConsole
+namespace AmsiWrapper
 {
-    internal class AmsiWrapper : IDisposable
+    public class AmsiWrapper : IDisposable
     {
         private IntPtr amsiContext = IntPtr.Zero;
 
@@ -20,10 +20,10 @@ namespace AmsiConsole
             }
         }
 
-        public Amsi.AMSI_RESULT ScanBuffer(byte[] buffer, string contentName)
+        public AMSI_RESULT ScanBuffer(byte[] buffer, string contentName)
         {
             IntPtr bufferPtr = Marshal.AllocHGlobal(buffer.Length);
-            Amsi.AMSI_RESULT result = Amsi.AMSI_RESULT.AMSI_RESULT_NOT_DETECTED;
+            AMSI_RESULT result = AMSI_RESULT.AMSI_RESULT_NOT_DETECTED;
             try
             {
                 Marshal.Copy(buffer, 0, bufferPtr, buffer.Length);
@@ -40,9 +40,9 @@ namespace AmsiConsole
             return result;
         }
 
-        public Amsi.AMSI_RESULT ScanString(string content, string contentName)
+        public AMSI_RESULT ScanString(string content, string contentName)
         {
-            int ecode = Amsi.AmsiScanString(amsiContext, content, contentName, IntPtr.Zero, out Amsi.AMSI_RESULT result);
+            int ecode = Amsi.AmsiScanString(amsiContext, content, contentName, IntPtr.Zero, out AMSI_RESULT result);
             if (ecode != 0)
             {
                 throw new Exception("Failed to scan string");
