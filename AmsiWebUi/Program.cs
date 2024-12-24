@@ -17,13 +17,14 @@ namespace AmsiWebUi
         static void Main(string[] args)
         {
             amsi = new AmsiWrapper.AmsiWrapper("AmsiWebUi");
-            httpd = new HttpServer(new string[] { "http://127.0.0.1:8080/" });
+            string listen_prefix = Environment.GetEnvironmentVariable("LISTEN_PREFIX") ?? "http://127.0.0.1:8080/";
+            httpd = new HttpServer(new string[] { listen_prefix });
 
             httpd.IncomingHttpRequest += Httpd_IncomingHttpRequest;
 
             httpd.Start();
 
-            Console.WriteLine("Listening http request");
+            Console.WriteLine($"Listening http request on {listen_prefix}");
             Console.WriteLine("Press return to exit");
             Console.ReadLine();
 
